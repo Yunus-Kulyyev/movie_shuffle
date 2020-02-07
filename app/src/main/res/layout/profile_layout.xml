@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="350dp"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/curved_box_general"
+    android:id="@+id/profile_relative_layout_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:id="@+id/top_profile_nav"
+        android:background="@drawable/top_curved_box"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/back_btn"
+            android:src="@drawable/back_icon"
+            android:layout_width="32dp"
+            android:layout_height="32dp"/>
+
+        <TextView
+            android:layout_marginEnd="32dp"
+            android:text="Back"
+            android:textColor="@android:color/white"
+            android:id="@+id/navigation_title"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+<LinearLayout
+    android:layout_below="@+id/top_profile_nav"
+    android:id="@+id/profile_main_menu"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:gravity="center"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.cardview.widget.CardView
+            android:layout_marginEnd="16dp"
+            android:id="@+id/watch_list_page"
+            android:elevation="8dp"
+            app:cardCornerRadius="10dp"
+            android:layout_width="130dp"
+            android:layout_height="80dp">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:src="@drawable/addplaylist"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"/>
+
+                <com.graspery.www.spicemeup.CustomViews.NormalTextView
+                    android:text="Wish list"
+                    android:gravity="left|bottom"
+                    android:id="@+id/watch_list_count"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:textColor="@color/pieces_cherry"
+                    android:textSize="16sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/already_watched_list_page"
+            android:elevation="8dp"
+            android:layout_marginStart="16dp"
+            app:cardCornerRadius="10dp"
+            android:layout_width="130dp"
+            android:layout_height="80dp">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:src="@drawable/playlistaddcheck"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"/>
+
+                <com.graspery.www.spicemeup.CustomViews.NormalTextView
+                    android:text="My collection"
+                    android:gravity="left|bottom"
+                    android:id="@+id/watched_list_count"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:textColor="@color/pieces_cherry"
+                    android:textSize="16sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:gravity="center"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.cardview.widget.CardView
+            android:layout_marginEnd="16dp"
+            android:id="@+id/sign_out_button"
+            android:elevation="8dp"
+            app:cardCornerRadius="10dp"
+            android:layout_width="130dp"
+            android:layout_height="80dp">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:src="@drawable/logout"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"/>
+
+                <com.graspery.www.spicemeup.CustomViews.NormalTextView
+                    android:text="Sign out"
+                    android:gravity="left|bottom"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:textColor="@color/pieces_cherry"
+                    android:textSize="16sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/delete_account"
+            android:elevation="8dp"
+            android:layout_marginStart="16dp"
+            app:cardCornerRadius="10dp"
+            android:layout_width="130dp"
+            android:layout_height="80dp">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:src="@drawable/deleteuser"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"/>
+
+                <com.graspery.www.spicemeup.CustomViews.NormalTextView
+                    android:text="Delete account"
+                    android:gravity="left|bottom"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:textColor="@color/pieces_cherry"
+                    android:textSize="16sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+</LinearLayout>
+
+    <LinearLayout
+        android:layout_below="@+id/top_profile_nav"
+        android:visibility="gone"
+        android:id="@+id/listview_layout_inlayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            layout="@layout/collection_watch_list_layout"/>
+    </LinearLayout>
+
+   <!-- <ListView
+        android:layout_below="@+id/top_profile_nav"
+        android:id="@+id/wish_or_watched_list"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>-->
+
+</RelativeLayout>

@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linear_layout_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/content_screen"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <com.daimajia.slider.library.SliderLayout
+                        android:id="@+id/slider"
+                        android:layout_width="match_parent"
+                        android:layout_height="360dp"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/top_curved_no_color_box" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/standard_gradient_background"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:id="@+id/movie_poster"
+                                android:layout_width="150dp"
+                                android:layout_height="200dp"
+                                android:padding="4dp"
+                                android:src="@drawable/person_icon" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/movie_release"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Release Date"
+                                    android:textColor="@android:color/white"
+                                    android:textSize="16sp" />
+
+                                <TextView
+                                    android:id="@+id/movie_rating"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Movie Rating"
+                                    android:textColor="@android:color/white"
+                                    android:textSize="16sp" />
+
+                                <TextView
+                                    android:id="@+id/movie_votes"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Movie Votes"
+                                    android:textColor="@android:color/white"
+                                    android:textSize="16sp" />
+
+                                <RelativeLayout
+                                    android:id="@+id/watch_list_relative"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="8dp"
+                                    android:paddingEnd="8dp">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentStart="true"
+                                        android:layout_centerVertical="true"
+                                        android:text="Watch list"
+                                        android:textColor="@android:color/white"
+                                        android:textSize="16sp" />
+
+                                    <CheckBox
+                                        android:id="@+id/watch_list_radio"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_centerVertical="true"
+                                        android:buttonTint="#F46036"
+                                        app:buttonTint="@android:color/holo_green_light" />
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:id="@+id/already_watched_relative"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:paddingEnd="8dp">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentStart="true"
+                                        android:layout_centerVertical="true"
+                                        android:text="My collection"
+                                        android:textColor="@android:color/white"
+                                        android:textSize="16sp" />
+
+                                    <CheckBox
+                                        android:id="@+id/already_watched_radio"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_centerVertical="true"
+                                        android:buttonTint="#F46036"
+                                        app:buttonTint="@android:color/holo_green_light" />
+                                </RelativeLayout>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:textSize="16sp"
+                                android:text="Tagline"
+                                android:id="@+id/tagline"
+                                android:textColor="@android:color/white"
+                                android:padding="8dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"/>
+
+                            <TextView
+                                android:id="@+id/movie_overview"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="8dp"
+                                android:text="Movie Overview"
+                                android:textColor="@android:color/white"
+                                android:textSize="14sp" />
+
+                            <LinearLayout
+                                android:padding="8dp"
+                                android:visibility="gone"
+                                android:id="@+id/availability_linear"
+                                android:orientation="vertical"
+                                android:layout_marginTop="8dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:textSize="18sp"
+                                    android:textColor="@android:color/white"
+                                    android:text="Available on"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"/>
+
+                                <View
+                                    android:background="@color/pieces_cherry"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="1dp"/>
+
+                                <ListView
+                                    android:id="@+id/availability_listview"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:weightSum="2">
+
+                                <TextView
+                                    android:id="@+id/budget_title"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:gravity="center"
+                                    android:padding="8dp"
+                                    android:text="Budget:"
+                                    android:textColor="@android:color/white"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/budget_textview"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:gravity="center"
+                                    android:text="$200,000,000"
+                                    android:textColor="@android:color/white"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:weightSum="2">
+
+                                <TextView
+                                    android:id="@+id/revenue_title"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:gravity="center"
+                                    android:padding="8dp"
+                                    android:text="Revenue:"
+                                    android:textColor="@android:color/white"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/revenue_textview"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:gravity="center"
+                                    android:text="$500,000,000"
+                                    android:textColor="@android:color/white"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:weightSum="2">
+
+                                <TextView
+                                    android:id="@+id/net_title"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:gravity="center"
+                                    android:padding="8dp"
+                                    android:text="Net Gain/Loss:"
+                                    android:textColor="@android:color/white"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/net_textview"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:gravity="center"
+                                    android:text="$300,000,000"
+                                    android:textColor="@android:color/holo_green_light"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                            <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+                                android:id="@+id/youtube_player_view"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                app:autoPlay="false"
+                                app:showFullScreenButton="false"
+                                app:useWebUi="false" />
+
+                            <!--<TextView
+                                android:layout_marginTop="8dp"
+                                android:textStyle="bold"
+                                android:gravity="center"
+                                android:textSize="24sp"
+                                android:textColor="@android:color/white"
+                                android:text="Cast"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"/>-->
+
+                            <LinearLayout
+                                android:id="@+id/cast_layout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:orientation="vertical" />
+
+                            <com.ms.square.android.expandabletextview.ExpandableTextView xmlns:expandableTextView="http://schemas.android.com/apk/res-auto"
+                                android:id="@+id/expand_text_view"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginTop="8dp"
+                                android:layout_marginEnd="16dp"
+                                android:layout_marginBottom="8dp"
+                                expandableTextView:animDuration="400"
+                                expandableTextView:maxCollapsedLines="1">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:orientation="horizontal"
+                                    android:weightSum="5">
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="3"
+                                        android:text="Cast"
+                                        android:textColor="@android:color/white"
+                                        android:textSize="14sp"
+                                        android:textStyle="bold" />
+
+                                    <ImageButton
+                                        android:id="@id/expand_collapse"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="right|bottom"
+                                        android:layout_weight="2"
+                                        android:background="@android:color/transparent"
+                                        android:paddingStart="16dp"
+                                        android:paddingTop="8dp"
+                                        android:paddingEnd="16dp"
+                                        android:paddingBottom="8dp" />
+                                </LinearLayout>
+
+                                <TextView
+                                    android:id="@id/expandable_text"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:textColor="#bdbbbb"
+                                    android:textSize="14sp" />
+
+                            </com.ms.square.android.expandabletextview.ExpandableTextView>
+
+                            <com.ms.square.android.expandabletextview.ExpandableTextView xmlns:expandableTextView="http://schemas.android.com/apk/res-auto"
+                                android:id="@+id/expand_text_view2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginEnd="16dp"
+                                android:layout_marginBottom="8dp"
+                                expandableTextView:animDuration="400"
+                                expandableTextView:maxCollapsedLines="1">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:orientation="horizontal"
+                                    android:weightSum="5">
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="3"
+                                        android:text="Crew"
+                                        android:textColor="@android:color/white"
+                                        android:textSize="14sp"
+                                        android:textStyle="bold" />
+
+                                    <ImageButton
+                                        android:id="@id/expand_collapse"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="end|bottom"
+                                        android:layout_weight="2"
+                                        android:background="@android:color/transparent"
+                                        android:paddingStart="16dp"
+                                        android:paddingTop="8dp"
+                                        android:paddingEnd="16dp"
+                                        android:paddingBottom="8dp" />
+                                </LinearLayout>
+
+                                <TextView
+                                    android:id="@id/expandable_text"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:textColor="#bdbbbb"
+                                    android:textSize="14sp" />
+
+                            </com.ms.square.android.expandabletextview.ExpandableTextView>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="8dp"
+        android:paddingTop="4dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="4dp">
+
+        <ImageView
+            android:id="@+id/back_btn"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/back_icon" />
+
+        <TextView
+            android:id="@+id/movie_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            android:gravity="center"
+            android:text="Movie Title"
+            android:shadowColor="#000"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="50"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+</RelativeLayout>

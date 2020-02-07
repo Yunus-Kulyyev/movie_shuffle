@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:paddingEnd="16dp"
+    android:paddingStart="16dp"
+    android:paddingBottom="16dp"
+    android:gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="140dp">
+
+    <LinearLayout
+        android:id="@+id/saved_movie_details_linear"
+        android:weightSum="3"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/archive_poster"
+            android:layout_weight="1"
+            android:layout_width="130dp"
+            android:layout_height="130dp"/>
+
+        <RelativeLayout
+            android:layout_weight="2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.graspery.www.spicemeup.CustomViews.NormalTextView
+                android:padding="8dp"
+                android:id="@+id/movie_title_archive"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:text="Action"
+                android:textColor="@android:color/white"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+            <com.graspery.www.spicemeup.CustomViews.NormalTextView
+                android:layout_alignParentBottom="true"
+                android:gravity="center"
+                android:textColor="@color/pieces_lipstick"
+                android:text="Click for more info..."
+                android:layout_marginBottom="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </RelativeLayout>
+
+    </LinearLayout>
+    <View
+        android:layout_alignParentBottom="true"
+        android:background="#FFF"
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"/>
+
+    <!--<View
+        android:background="#FFF"
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"/>-->
+</RelativeLayout>

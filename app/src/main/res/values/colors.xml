@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#000</color>
+    <color name="colorAccent">#D81B60</color>
+    
+    
+    <color name="pieces_dark">#1A1A1D</color>
+    <color name="pieces_gray">#4E4E50</color>
+    <color name="pieces_cherry">#6F2232</color>
+    <color name="pieces_lipstick">#950740</color>
+    <color name="pieces_strawberry">#C3073F</color>
+</resources>

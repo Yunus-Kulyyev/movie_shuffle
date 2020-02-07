@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "811888227433",
+    "firebase_url": "https://randommovie-7ae52.firebaseio.com",
+    "project_id": "randommovie-7ae52",
+    "storage_bucket": "randommovie-7ae52.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:811888227433:android:c7edb80ab6e7270bea5ef8",
+        "android_client_info": {
+          "package_name": "com.graspery.www.spicemeup"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "811888227433-pbfpkfdq0lb6vvl3cl6te4sh41nc2nj5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.graspery.www.spicemeup",
+            "certificate_hash": "0d86172afed2c7841ad0cef706699ae9bc1612ad"
+          }
+        },
+        {
+          "client_id": "811888227433-bsmb13fm5frevvpplghp51qr3apo4pjd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC26XQWJ_qLIcFYUu6wIVJvOF1ke3LRsew"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "811888227433-bsmb13fm5frevvpplghp51qr3apo4pjd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
