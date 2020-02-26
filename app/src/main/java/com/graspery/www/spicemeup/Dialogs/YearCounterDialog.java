@@ -2,46 +2,29 @@ package com.graspery.www.spicemeup.Dialogs;
 
 
 import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
-import android.view.animation.OvershootInterpolator;
-import android.view.animation.TranslateAnimation;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
-import com.graspery.www.spicemeup.CustomViews.NormalTextView;
-import com.graspery.www.spicemeup.Platforms.NetflixActivity;
 import com.graspery.www.spicemeup.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 
-import info.movito.themoviedbapi.TmdbApi;
-import info.movito.themoviedbapi.TmdbMovies;
-import info.movito.themoviedbapi.model.Discover;
-import info.movito.themoviedbapi.model.MovieDb;
-import info.movito.themoviedbapi.model.core.MovieResultsPage;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -86,7 +69,7 @@ public class YearCounterDialog extends Dialog {
              minYear = new Random().nextInt(maxRangeYear-minRangeYear) + minRangeYear + 1;
         }
 
-        if(mPreferences.getBoolean("quotes", true)) {
+        if(mPreferences.getBoolean("quotes", false)) {
             new ReadDatabase().execute();
         }
 
@@ -157,23 +140,21 @@ public class YearCounterDialog extends Dialog {
             public void onAnimationEnd(Animator animation) {
                 fact.setVisibility(View.VISIBLE);
 
-                if(mPreferences.getBoolean("quotes", true)) {
-                    Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            SharedPreferences.Editor editor = c.getSharedPreferences("grasperySettings", MODE_PRIVATE).edit();
-                            editor.putInt("year", minYear);
-                            editor.apply();
-                            dismiss();
-                        }
-                    }, 3500);
-                } else {
-                    SharedPreferences.Editor editor = c.getSharedPreferences("grasperySettings", MODE_PRIVATE).edit();
-                    editor.putInt("year", minYear);
-                    editor.apply();
-                    dismiss();
+                //int millisecs = 800;
+                int millisecs = 3000;
+                if(!mPreferences.getBoolean("quotes", false)) {
+                    millisecs = 800;
                 }
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        SharedPreferences.Editor editor = c.getSharedPreferences("grasperySettings", MODE_PRIVATE).edit();
+                        editor.putInt("year", minYear);
+                        editor.apply();
+                        dismiss();
+                    }
+                }, millisecs);
             }
 
             @Override

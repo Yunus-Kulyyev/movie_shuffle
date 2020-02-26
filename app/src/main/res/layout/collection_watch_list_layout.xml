@@ -13,7 +13,7 @@
             android:layout_toStartOf="@+id/search_autocomplete"
             android:layout_alignParentStart="true"
             android:textSize="18sp"
-            android:textColor="@android:color/white"
+            android:textColor="@android:color/black"
             android:textColorHint="@android:color/darker_gray"
             android:hint="Search collection"
             android:id="@+id/autocomplete_search_archive"

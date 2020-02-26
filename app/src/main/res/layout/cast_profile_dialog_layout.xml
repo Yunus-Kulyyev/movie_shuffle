@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:padding="16dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_marginTop="40dp"
+    android:orientation="vertical" android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <View
+        android:layout_alignTop="@+id/cast_linear"
+        android:layout_alignBottom="@+id/bio_scroll"
+        android:background="@drawable/top_curved_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <ImageView
+        android:src="@drawable/star"
+        android:id="@+id/cast_profile_picture"
+        android:layout_width="130dp"
+        android:layout_height="170dp"/>
+
+
+    <LinearLayout
+        android:id="@+id/cast_linear"
+        android:orientation="vertical"
+        android:layout_toEndOf="@+id/cast_profile_picture"
+        android:layout_alignParentEnd="true"
+        android:layout_above="@+id/bio_scroll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/close_imageview"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="8dp"
+            android:layout_gravity="end"
+            android:src="@drawable/close_cross"
+            android:layout_width="24dp"
+            android:layout_height="24dp"/>
+
+        <TextView
+            android:textColor="@android:color/white"
+            android:id="@+id/cast_profile_name"
+            android:padding="4dp"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:text="Name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:textColor="@android:color/white"
+            android:id="@+id/cast_profile_birth"
+            android:padding="4dp"
+            android:text="Birth"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:textColor="@android:color/white"
+            android:id="@+id/cast_profile_death"
+            android:padding="4dp"
+            android:text="Death"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:textColor="@android:color/white"
+            android:id="@+id/cast_profile_place"
+            android:padding="4dp"
+            android:text="Place"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <ScrollView
+        android:verticalScrollbarPosition="right"
+        android:id="@+id/bio_scroll"
+        android:layout_below="@+id/cast_profile_picture"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:padding="16dp"
+                android:text="Biography"
+                android:textColor="@android:color/white"
+                android:id="@+id/cast_profile_biography"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <LinearLayout
+                android:visibility="gone"
+                android:padding="8dp"
+                android:weightSum="2"
+                android:id="@+id/links_linear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/instagram_link"
+                    android:layout_weight="1"
+                    android:src="@drawable/instagram"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"/>
+                <ImageView
+                    android:id="@+id/linkedin_link"
+                    android:layout_weight="1"
+                    android:src="@drawable/linkedin"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

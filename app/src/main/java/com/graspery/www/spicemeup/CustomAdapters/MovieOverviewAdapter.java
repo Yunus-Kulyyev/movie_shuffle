@@ -27,9 +27,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.graspery.www.spicemeup.CustomViews.NormalTextView;
 import com.graspery.www.spicemeup.Dialogs.MovieInfoDialog;
-import com.graspery.www.spicemeup.Platforms.NetflixActivity;
 import com.graspery.www.spicemeup.R;
 
 import java.util.List;
@@ -160,6 +158,8 @@ public class MovieOverviewAdapter extends ArrayAdapter<MovieDb> {
             movieInfoDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             View view = View.inflate(mContext, R.layout.movie_info_dialog, null);
             movieInfoDialog.setContentView(view);
+            movieInfoDialog.getWindow()
+                    .getAttributes().windowAnimations = R.style.CoolDialogAnimation;
             BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
             bottomSheetBehavior.setPeekHeight((int)(height/(1.1)));
             movieInfoDialog.show();

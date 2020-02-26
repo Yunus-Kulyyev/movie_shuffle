@@ -34,14 +34,14 @@
                 android:textStyle="bold"
                 android:gravity="center"
                 android:text="Action"
-                android:textColor="@android:color/white"
+                android:textColor="@color/pieces_cherry"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
 
             <com.graspery.www.spicemeup.CustomViews.NormalTextView
                 android:layout_alignParentBottom="true"
                 android:gravity="center"
-                android:textColor="@color/pieces_lipstick"
+                android:textColor="@android:color/darker_gray"
                 android:text="Click for more info..."
                 android:layout_marginBottom="8dp"
                 android:layout_width="match_parent"

@@ -1,4 +1,4 @@
-package com.graspery.www.spicemeup.Platforms;
+package com.graspery.www.spicemeup.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,7 +17,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
 import com.graspery.www.spicemeup.Firebase.FirebaseDatabaseHelper;
 import com.graspery.www.spicemeup.R;
 
@@ -27,10 +27,12 @@ public class LoginActivity extends AppCompatActivity {
     private EditText passwordEditText;
     private AppCompatButton loginButton;
     private TextView registerTextView;
+    private TextView guestContinue;
 
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
     private boolean isRegisteredUser;
+    private ProgressBar mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,10 +49,20 @@ public class LoginActivity extends AppCompatActivity {
     private void initializeComponents() {
         mFirebaseDatabaseHelper = new FirebaseDatabaseHelper(this);
 
+        mProgressBar = findViewById(R.id.login_progress_bar);
         emailEditText = findViewById(R.id.input_email);
         passwordEditText = findViewById(R.id.input_password);
         loginButton = findViewById(R.id.btn_login);
         registerTextView = findViewById(R.id.link_signup);
+
+        guestContinue = findViewById(R.id.guest_continue);
+        guestContinue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //startActivity(new Intent(LoginActivity.this, NetflixActivity.class));
+                finish();
+            }
+        });
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,10 +83,12 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void signInExistingUser(String email, String password) {
+        mProgressBar.setVisibility(View.VISIBLE);
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        mProgressBar.setVisibility(View.GONE);
                         if (task.isSuccessful()) {
                             currentUser = mAuth.getCurrentUser();
                             isRegisteredUser = true;

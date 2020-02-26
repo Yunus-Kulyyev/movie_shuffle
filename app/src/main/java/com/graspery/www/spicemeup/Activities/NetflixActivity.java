@@ -1,9 +1,7 @@
-package com.graspery.www.spicemeup.Platforms;
+package com.graspery.www.spicemeup.Activities;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import info.movito.themoviedbapi.TmdbApi;
-import info.movito.themoviedbapi.TmdbMovies;
 import info.movito.themoviedbapi.model.Discover;
 import info.movito.themoviedbapi.model.MovieDb;
 import info.movito.themoviedbapi.model.core.MovieResultsPage;
@@ -12,8 +10,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,30 +18,26 @@ import android.os.Vibrator;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
+import android.view.Window;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.graspery.www.spicemeup.CustomAdapters.MovieOverviewAdapter;
 import com.graspery.www.spicemeup.Dialogs.MovieInfoDialog;
 import com.graspery.www.spicemeup.Dialogs.NetflixDialog;
 import com.graspery.www.spicemeup.Dialogs.ProfileSettingsDialog;
+import com.graspery.www.spicemeup.Dialogs.SettingsDialog;
 import com.graspery.www.spicemeup.Dialogs.YearCounterDialog;
 import com.graspery.www.spicemeup.Firebase.FirebaseDatabaseHelper;
-import com.graspery.www.spicemeup.MainActivity;
 import com.graspery.www.spicemeup.R;
-import com.graspery.www.spicemeup.SettingsActivity;
+import com.graspery.www.spicemeup.Utility.AppStatus;
 import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayout;
 import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayoutDirection;
 
@@ -67,8 +59,11 @@ public class NetflixActivity extends AppCompatActivity implements View.OnClickLi
     private final String TMBD_POSTER_LINK = "https://image.tmdb.org/t/p/w600_and_h900_bestv2";
     SharedPreferences prefs;
 
-    ImageView profileBtn;
-    ImageView settingsBtn;
+    RelativeLayout profileBtn;
+    RelativeLayout settingsBtn;
+
+    //RelativeLayout topNavigation;
+    //TextView yearTitle;
 
     int offSetIndex;
 
@@ -134,31 +129,26 @@ public class NetflixActivity extends AppCompatActivity implements View.OnClickLi
         profileBtn.setOnClickListener(this);
 
         movieOverviewListView = findViewById(R.id.movie_overview_listview);
+/*
+        topNavigation = findViewById(R.id.top_navigation);
+        topNavigation.setVisibility(View.INVISIBLE);
+        yearTitle = findViewById(R.id.top_year_title);*/
 
         initalizeGenres();
         callGenrePicker();
 
-
         offSetIndex = 1;
         shuffleBtn = findViewById(R.id.shuffle_btn);
-        shuffleBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                YoYo.with(Techniques.Shake).pivot(150,150)
-                        .duration(300)
-                        .repeat(0)
-                        .playOn(findViewById(R.id.shuffle_btn));
-
-                shuffleAction();
-            }
-        });
+        shuffleBtn.setOnClickListener(this);
 
         mSwipyRefreshLayout = findViewById(R.id.swipe_refresher);
         mSwipyRefreshLayout.setDistanceToTriggerSync(height/9);
         mSwipyRefreshLayout.setOnRefreshListener(new SwipyRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh(SwipyRefreshLayoutDirection direction) {
-                shuffleAction();
+                if(isOnline()) {
+                    shuffleAction();
+                }
                 mSwipyRefreshLayout.setRefreshing(false);
             }
         });
@@ -191,6 +181,8 @@ public class NetflixActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void callGenrePicker() {
+        //startActivity(new Intent(this, MainIntroActivity.class));
+
         chosenMovies.clear();
         offSetIndex = 1;
         shuffleCount = 0;
@@ -205,11 +197,22 @@ public class NetflixActivity extends AppCompatActivity implements View.OnClickLi
                     @Override
                     public void onDismiss(DialogInterface dialog) {
                         pageNumber = 1;
+                       /* topNavigation.setVisibility(View.VISIBLE);
+                        yearTitle.setText(prefs.getInt("year", 2019) + "");*/
                         new ReadDatabase().execute();
                     }
                 });
             }
         });
+    }
+
+    private boolean isOnline() {
+        if (AppStatus.getInstance(this).isOnline()) {
+            return true;
+        } else {
+            Toast.makeText(this, "No internet connection. Please connect to Wifi or Data and try again.",Toast.LENGTH_LONG).show();
+            return false;
+        }
     }
 
     @Override
@@ -220,9 +223,32 @@ public class NetflixActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View v) {
         switch(v.getId()) {
+            case R.id.shuffle_btn: {
+                YoYo.with(Techniques.Shake).pivot(150,150)
+                        .duration(300)
+                        .repeat(0)
+                        .playOn(findViewById(R.id.shuffle_btn));
+
+                if(isOnline()) {
+                    shuffleAction();
+                }
+                break;
+            }
             case R.id.settings_button : {
-                startActivity(new Intent(NetflixActivity.this, SettingsActivity.class));
-                finish();
+                SettingsDialog settingsDialog = new SettingsDialog(this);
+                //settingsDialog.show();
+
+                settingsDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                View view = View.inflate(this, R.layout.activity_settings, null);
+                settingsDialog.setContentView(view);
+
+                settingsDialog.getWindow()
+                        .getAttributes().windowAnimations = R.style.CoolDialogAnimation;
+
+                BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                bottomSheetBehavior.setPeekHeight(0);
+                settingsDialog.show();
                 break;
             }
             case R.id.profile_button: {
@@ -300,7 +326,7 @@ public class NetflixActivity extends AppCompatActivity implements View.OnClickLi
             */
                 return discoveredMovies.toString();
             } catch (RuntimeException e) {
-                Toast.makeText(NetflixActivity.this, "Network issue. Please try again later.", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(NetflixActivity.this, "Network issue. Please try again later.", Toast.LENGTH_SHORT).show();
 
                 return null;
             }
@@ -317,6 +343,9 @@ public class NetflixActivity extends AppCompatActivity implements View.OnClickLi
             loadingProgress.setVisibility(GONE);
             if(result != null) {
                 populateSuggestions(0);
+            }
+            else {
+                Toast.makeText(NetflixActivity.this, "Network issue. Please try again later.", Toast.LENGTH_SHORT).show();
             }
         }
     }

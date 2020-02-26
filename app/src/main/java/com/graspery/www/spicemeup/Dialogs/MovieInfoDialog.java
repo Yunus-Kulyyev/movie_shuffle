@@ -2,40 +2,31 @@ package com.graspery.www.spicemeup.Dialogs;
 
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
 import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.CheckBox;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.daimajia.slider.library.Animations.DescriptionAnimation;
-import com.daimajia.slider.library.Indicators.PagerIndicator;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -43,16 +34,14 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.database.core.utilities.Utilities;
 import com.graspery.www.spicemeup.CustomAdapters.AvailabilityListAdapter;
+import com.graspery.www.spicemeup.CustomAdapters.CastRecyclerViewAdapter;
 import com.graspery.www.spicemeup.Firebase.FirebaseDatabaseHelper;
 import com.graspery.www.spicemeup.Models.ArchiveModelMovie;
-import com.graspery.www.spicemeup.Platforms.LoginActivity;
-import com.graspery.www.spicemeup.Platforms.NetflixActivity;
-import com.graspery.www.spicemeup.Platforms.RegisterUserActivity;
+import com.graspery.www.spicemeup.Activities.LoginActivity;
 import com.graspery.www.spicemeup.R;
+import com.graspery.www.spicemeup.Utility.OkhttpHelperSingleton;
 import com.ms.square.android.expandabletextview.ExpandableTextView;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
@@ -67,22 +56,20 @@ import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import info.movito.themoviedbapi.TmdbApi;
 import info.movito.themoviedbapi.TmdbMovies;
 import info.movito.themoviedbapi.model.MovieDb;
-import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
 import static android.content.Context.MODE_PRIVATE;
 import static android.view.View.GONE;
-import static android.view.View.INVISIBLE;
 
-public class MovieInfoDialog extends BottomSheetDialog {
+public class MovieInfoDialog extends BottomSheetDialog implements View.OnClickListener {
 
     CheckBox watchListButton;
     CheckBox alreadyWatchedListButton;
@@ -109,6 +96,8 @@ public class MovieInfoDialog extends BottomSheetDialog {
     TextView net;
     TextView netTitle;
     TextView tagline;
+    TextView movieName;
+    TextView movieRuntime;
 
     LinearLayout castList;
     YouTubePlayerView youTubePlayerView;
@@ -125,8 +114,12 @@ public class MovieInfoDialog extends BottomSheetDialog {
     int type;
     ArchiveModelMovie archMovie;
 
+    RecyclerView recyclerView;
     private ListView availListview;
     private LinearLayout availLinear;
+
+    private OkhttpHelperSingleton mOkhttpHelperSingleton;
+    private ProgressBar mProgressBar;
 
     public MovieInfoDialog(Activity a, MovieDb movie) {
         super(a, R.style.SheetDialog);
@@ -154,7 +147,6 @@ public class MovieInfoDialog extends BottomSheetDialog {
         @Override
         protected String doInBackground(Void... params) {
             TmdbApi mTmdbApi = new TmdbApi(c.getResources().getString(R.string.tmdb_key));
-
             TmdbMovies movies = mTmdbApi.getMovies();
 
             formattedMovie = movies.getMovie(Integer.parseInt(movieDetails.getId()),
@@ -167,6 +159,8 @@ public class MovieInfoDialog extends BottomSheetDialog {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            mProgressBar.setVisibility(View.VISIBLE);
+
             //loadingProgress.setVisibility(View.VISIBLE);
         }
 
@@ -175,6 +169,7 @@ public class MovieInfoDialog extends BottomSheetDialog {
             //loadingProgress.setVisibility(GONE);
             movie = formattedMovie;
             setUp();
+            mProgressBar.setVisibility(GONE);
         }
     }
 
@@ -188,6 +183,9 @@ public class MovieInfoDialog extends BottomSheetDialog {
                 WindowManager.LayoutParams.MATCH_PARENT);
 
         mSharedPreferences = c.getSharedPreferences("grasperySettings", MODE_PRIVATE);
+        mOkhttpHelperSingleton = OkhttpHelperSingleton.getInstance();
+
+        mProgressBar = findViewById(R.id.movie_info_progress_bar);
 
         if(type == 0) {
             setUp();
@@ -201,6 +199,7 @@ public class MovieInfoDialog extends BottomSheetDialog {
     }
 
     private void setUp() {
+        recyclerView = findViewById(R.id.cast_recycler_view);
         mFirebaseDatabaseHelper = new FirebaseDatabaseHelper(c);
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
@@ -216,6 +215,7 @@ public class MovieInfoDialog extends BottomSheetDialog {
         revenueTitle = findViewById(R.id.revenue_title);
         net = findViewById(R.id.net_textview);
         netTitle = findViewById(R.id.net_title);
+        movieRuntime = findViewById(R.id.movie_runtime);
 
         try {
             budget.setText(formatter.format(movie.getBudget()));
@@ -249,6 +249,7 @@ public class MovieInfoDialog extends BottomSheetDialog {
 
         }
 
+
         movieTitle = findViewById(R.id.movie_title);
         movieTitle.setText(movie.getOriginalTitle());
         //movieTitle.setText(movie.getTagline());
@@ -259,14 +260,17 @@ public class MovieInfoDialog extends BottomSheetDialog {
             tagline.setVisibility(GONE);
         }
 
+        movieName = findViewById(R.id.movie_name);
+        movieName.setText(movie.getOriginalTitle());
+
         movieRelease = findViewById(R.id.movie_release);
-        movieRelease.setText("Release date:\n" + movie.getReleaseDate());
+        movieRelease.setText("Release: " + movie.getReleaseDate());
 
         movieRating = findViewById(R.id.movie_rating);
-        movieRating.setText("Rating:\n" + movie.getVoteAverage() + "/10");
+        movieRating.setText(movie.getVoteAverage()+"");
 
         movieVotes = findViewById(R.id.movie_votes);
-        movieVotes.setText("Votes:\n" + movie.getVoteCount() + "");
+        movieVotes.setText("Votes: " + movie.getVoteCount() + "");
 
         movieOverview = findViewById(R.id.movie_overview);
         movieOverview.setText(movie.getOverview());
@@ -277,44 +281,19 @@ public class MovieInfoDialog extends BottomSheetDialog {
                 .into(moviePoster);
 
         ImageView backbtn = findViewById(R.id.back_btn);
-        backbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
+        backbtn.setOnClickListener(this);
 
         watchListBool = false;
         watchListButton = findViewById(R.id.watch_list_radio);
-        watchListButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                watchListTrigger();
-            }
-        });
+        watchListButton.setOnClickListener(this);
         watchListRelative = findViewById(R.id.watch_list_relative);
-        watchListRelative.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                watchListTrigger();
-            }
-        });
+        watchListRelative.setOnClickListener(this);
 
         alreadyListBool = false;
         alreadyWatchedListButton = findViewById(R.id.already_watched_radio);
-        alreadyWatchedListButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alreadyWatchedListTrigger();
-            }
-        });
+        alreadyWatchedListButton.setOnClickListener(this);
         alreadyWatchedRelative = findViewById(R.id.already_watched_relative);
-        alreadyWatchedRelative.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alreadyWatchedListTrigger();
-            }
-        });
+        alreadyWatchedRelative.setOnClickListener(this);
 
         //logMovieDetails();
 
@@ -331,6 +310,29 @@ public class MovieInfoDialog extends BottomSheetDialog {
         }
 
         checkAvailabilityOnFirebase();
+
+        castImages();
+
+
+        //Set the runtime
+        if(movie.getRuntime() != 0) {
+            int hours = movie.getRuntime() / 60; //since both are ints, you get an int
+            int minutes = movie.getRuntime() % 60;
+            movieRuntime.setText("Runtime: " + hours + "h " + minutes + "min");
+        } else {
+            movieRuntime.setVisibility(GONE);
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(v.getId() == R.id.watch_list_radio || v.getId() == R.id.watch_list_relative) {
+            watchListTrigger();
+        } else if(v.getId() == R.id.already_watched_radio || v.getId() == R.id.already_watched_relative) {
+            alreadyWatchedListTrigger();
+        } else if(v.getId() == R.id.back_btn) {
+            dismiss();
+        }
     }
 
     private void setCastListView() {
@@ -345,6 +347,109 @@ public class MovieInfoDialog extends BottomSheetDialog {
 
             castList.addView(castText);
         }
+    }
+
+    private void castImages() {
+        int looperSize = 0;
+        if(movie.getCast().size() < 5) {
+            looperSize = movie.getCast().size();
+        } else if(movie.getCast().size() > 10){
+            looperSize = 10;
+        } else {
+            looperSize = 5;
+        }
+
+        for(int i = 0; i < looperSize; i++) {
+            new ReadCastImages(movie.getCast().get(i).getId()+"", movie.getCast().get(i).getName(), looperSize).execute();
+        }
+    }
+
+    ArrayList<String> castInfoJson;
+    //ArrayList<String[]> castImages;
+    RecyclerView.LayoutManager RecyclerViewLayoutManager;
+    LinearLayoutManager HorizontalLayout;
+
+    private class ReadCastImages extends AsyncTask<Void, Void, String> {
+        String castId;
+        String name;
+        int position;
+
+        public ReadCastImages(String castId, String name, int position) {
+            this.castId = castId;
+            this.name = name;
+            this.position = position;
+            castInfoJson = new ArrayList<>();
+            //castImages = new ArrayList<>();
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            Request request = new Request.Builder()
+                    .url("https://api.themoviedb.org/3/person/" + castId + "?api_key=" + c.getString(R.string.tmdb_key) + "&language=en-US")
+                    .build();
+            /*Request request = new Request.Builder()
+                    .url("https://api.themoviedb.org/3/person/" + castId + "/images?api_key=" + c.getString(R.string.tmdb_key))
+                    .build();*/
+
+            try {
+                Response response = mOkhttpHelperSingleton.getOkHttpClient().newCall(request).execute();
+                return response.body().string();
+
+            } catch (IOException e) {
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            if(result != null) {
+                castInfoJson.add(result);
+
+                if(position == (castInfoJson.size())) {
+                    recyclerView.setLayoutManager(new LinearLayoutManager(c));
+                    CastRecyclerViewAdapter adapter = new CastRecyclerViewAdapter(c, castInfoJson);
+                    RecyclerViewLayoutManager = new LinearLayoutManager(c.getApplicationContext());
+                    recyclerView.setLayoutManager(RecyclerViewLayoutManager);
+                    HorizontalLayout = new LinearLayoutManager(c, LinearLayoutManager.HORIZONTAL, false);
+                    recyclerView.setLayoutManager(HorizontalLayout);
+                    recyclerView.setAdapter(adapter);
+                }
+            }
+            /*try {
+                JSONObject jsonObject = new JSONObject(result);
+                JSONArray jsonArray = jsonObject.getJSONArray("profiles");
+
+                JSONObject firstOccurObject = jsonArray.getJSONObject(0);
+
+                if(firstOccurObject != null) {
+                    String url = firstOccurObject.getString("file_path");
+                    castImages.add(new String[]{name, "https://image.tmdb.org/t/p/w600_and_h900_bestv2" + url});
+
+
+                    if(position == (castImages.size()-1)) {
+                        recyclerView.setLayoutManager(new LinearLayoutManager(c));
+                        CastRecyclerViewAdapter adapter = new CastRecyclerViewAdapter(c, castImages);
+                        RecyclerViewLayoutManager = new LinearLayoutManager(c.getApplicationContext());
+                        recyclerView.setLayoutManager(RecyclerViewLayoutManager);
+                        HorizontalLayout = new LinearLayoutManager(c, LinearLayoutManager.HORIZONTAL, false);
+                        recyclerView.setLayoutManager(HorizontalLayout);
+                        recyclerView.setAdapter(adapter);
+                    }
+                }
+
+
+            } catch (JSONException e){
+
+            } catch (NullPointerException e) {
+
+            }*/
+        }
+
     }
 
     private void showCast() {
@@ -528,8 +633,9 @@ public class MovieInfoDialog extends BottomSheetDialog {
                     populateAvailability(movieList);
 
                 } else {
-                    CheckAvailabilityThread checkAvailabilityThread = new CheckAvailabilityThread();
-                    checkAvailabilityThread.execute();
+                    /** Uncomment to Activate Utella API. $0.01 per request if over 1000 requests/month**/
+                    //CheckAvailabilityThread checkAvailabilityThread = new CheckAvailabilityThread();
+                    //checkAvailabilityThread.execute();
                 }
             }
 
@@ -544,7 +650,7 @@ public class MovieInfoDialog extends BottomSheetDialog {
 
         @Override
         protected String doInBackground(Void... params) {
-            OkHttpClient client = new OkHttpClient();
+            //OkHttpClient client = new OkHttpClient();
 
             Request request = new Request.Builder()
                     .url("https://utelly-tv-shows-and-movies-availability-v1.p.rapidapi.com/lookup?term=" + movie.getOriginalTitle() + "&country=us")
@@ -554,7 +660,7 @@ public class MovieInfoDialog extends BottomSheetDialog {
                     .build();
 
             try {
-                Response response = client.newCall(request).execute();
+                Response response = mOkhttpHelperSingleton.getOkHttpClient().newCall(request).execute();
                 return response.body().string();
 
             } catch (IOException e) {

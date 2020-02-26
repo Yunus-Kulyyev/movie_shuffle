@@ -23,6 +23,13 @@
         <item name="android:windowExitAnimation">@anim/slide_down</item>
     </style>
 
+    <style name="FadingDialogAnimation">
+
+        <item name="android:statusBarColor">@color/pieces_cherry</item>
+        <item name="android:windowEnterAnimation">@anim/fadein</item>
+        <item name="android:windowExitAnimation">@anim/fadeout</item>
+    </style>
+
 
     <style name="SheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
         <!--<item name="android:windowCloseOnTouchOutside">false</item>-->

@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:layout_width="350dp"
+<RelativeLayout android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/curved_box_general"
     android:id="@+id/profile_relative_layout_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
         android:id="@+id/top_profile_nav"
-        android:background="@drawable/top_curved_box"
+        android:background="@drawable/top_curved_white_box"
         android:paddingTop="4dp"
         android:paddingBottom="4dp"
         android:paddingStart="8dp"
@@ -19,6 +18,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
+            android:tint="@android:color/black"
             android:id="@+id/back_btn"
             android:src="@drawable/back_icon"
             android:layout_width="32dp"
@@ -27,7 +27,7 @@
         <TextView
             android:layout_marginEnd="32dp"
             android:text="Back"
-            android:textColor="@android:color/white"
+            android:textColor="@android:color/black"
             android:id="@+id/navigation_title"
             android:gravity="center"
             android:textSize="18sp"
@@ -38,6 +38,7 @@
     </LinearLayout>
 
 <LinearLayout
+    android:background="@android:color/white"
     android:layout_below="@+id/top_profile_nav"
     android:id="@+id/profile_main_menu"
     android:orientation="vertical"
@@ -47,6 +48,8 @@
     android:layout_height="wrap_content">
 
     <LinearLayout
+        android:clipToPadding="false"
+        android:padding="8dp"
         android:gravity="center"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
@@ -120,6 +123,8 @@
     </LinearLayout>
 
     <LinearLayout
+        android:clipToPadding="false"
+        android:padding="8dp"
         android:gravity="center"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
@@ -192,6 +197,8 @@
 </LinearLayout>
 
     <LinearLayout
+        android:background="@android:color/white"
+        android:nestedScrollingEnabled="true"
         android:layout_below="@+id/top_profile_nav"
         android:visibility="gone"
         android:id="@+id/listview_layout_inlayout"
@@ -203,6 +210,7 @@
             android:layout_height="match_parent"
             layout="@layout/collection_watch_list_layout"/>
     </LinearLayout>
+
 
    <!-- <ListView
         android:layout_below="@+id/top_profile_nav"

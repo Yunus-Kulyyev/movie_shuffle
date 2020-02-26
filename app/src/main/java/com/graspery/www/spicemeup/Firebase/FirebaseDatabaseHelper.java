@@ -1,10 +1,6 @@
 package com.graspery.www.spicemeup.Firebase;
 
 import android.app.Activity;
-import android.os.AsyncTask;
-import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -16,19 +12,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.graspery.www.spicemeup.Dialogs.MovieInfoDialog;
-import com.graspery.www.spicemeup.Platforms.NetflixActivity;
-import com.graspery.www.spicemeup.R;
 
 import java.util.HashMap;
 
 import androidx.annotation.NonNull;
-import info.movito.themoviedbapi.TmdbApi;
-import info.movito.themoviedbapi.TmdbMovies;
 import info.movito.themoviedbapi.model.MovieDb;
-
-import static android.view.View.GONE;
-import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class FirebaseDatabaseHelper {
     private Activity activity;

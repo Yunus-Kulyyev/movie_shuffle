@@ -1,4 +1,4 @@
-package com.graspery.www.spicemeup.Platforms;
+package com.graspery.www.spicemeup.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;

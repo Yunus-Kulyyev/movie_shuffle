@@ -1,27 +1,26 @@
 package com.graspery.www.spicemeup.Dialogs;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -30,20 +29,20 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.graspery.www.spicemeup.CustomAdapters.ArchiveListAdapter;
-import com.graspery.www.spicemeup.CustomAdapters.GenreListViewAdapter;
 import com.graspery.www.spicemeup.Firebase.FirebaseDatabaseHelper;
 import com.graspery.www.spicemeup.Models.ArchiveModelMovie;
-import com.graspery.www.spicemeup.Platforms.NetflixActivity;
 import com.graspery.www.spicemeup.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 
-public class ProfileSettingsDialog extends Dialog {
+public class ProfileSettingsDialog extends BottomSheetDialog {
 
     private Activity c;
     private CardView signOutButton;
@@ -74,7 +73,7 @@ public class ProfileSettingsDialog extends Dialog {
     MovieInfoDialog movieInfoDialog;
 
     public ProfileSettingsDialog(Activity a) {
-        super(a);
+        super(a, R.style.SheetDialog);
         // TODO Auto-generated constructor stub
         this.c = a;
     }
@@ -84,6 +83,9 @@ public class ProfileSettingsDialog extends Dialog {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.profile_layout);
+
+        getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.MATCH_PARENT);
 
         getWindow().getAttributes().windowAnimations = R.style.CoolDialogAnimation;
         getWindow().setBackgroundDrawableResource(android.R.color.transparent);
@@ -148,8 +150,8 @@ public class ProfileSettingsDialog extends Dialog {
 
         wishOrWatchedList = findViewById(R.id.wish_or_watched_list);
 
-        leftToRigh = AnimationUtils.loadAnimation(c, R.anim.slide_left_to_right);
-        centerToRigh = AnimationUtils.loadAnimation(c, R.anim.slide_center_to_right);
+        leftToRigh = AnimationUtils.loadAnimation(c, R.anim.slide_up);           //Incoming
+        centerToRigh = AnimationUtils.loadAnimation(c, R.anim.slide_down);       //Outgoing
         centerToRigh.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
@@ -174,28 +176,32 @@ public class ProfileSettingsDialog extends Dialog {
 
             }
         });
-        right = AnimationUtils.loadAnimation(c, R.anim.slide_far_left);
 
-        left = AnimationUtils.loadAnimation(c, R.anim.slide_left);
+        right = AnimationUtils.loadAnimation(c, R.anim.slide_up);           //Incoming
+        left = AnimationUtils.loadAnimation(c, R.anim.slide_down);          //Outgoing
         left.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-
+                listViewLayout.setVisibility(View.VISIBLE);
+                listViewLayout.startAnimation(right);
             }
 
             @Override
             public void onAnimationEnd(Animation animation) {
                 profileMenu.setVisibility(View.GONE);
+                /*profileMenu.setVisibility(View.GONE);
                 listViewLayout.setVisibility(View.VISIBLE);
+                listViewLayout.startAnimation(right);*/
                 //wishOrWatchedList.setVisibility(View.VISIBLE);
-                wishOrWatchedList.startAnimation(right);
-                mAutoCompleteTextView.startAnimation(right);
+                //wishOrWatchedList.startAnimation(right);
+                //mAutoCompleteTextView.startAnimation(right);
 
                 backBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        wishOrWatchedList.startAnimation(centerToRigh);
-                        mAutoCompleteTextView.startAnimation(centerToRigh);
+                        listViewLayout.startAnimation(centerToRigh);
+                        //wishOrWatchedList.startAnimation(centerToRigh);
+                        //mAutoCompleteTextView.startAnimation(centerToRigh);
                         profileMenu.setVisibility(View.VISIBLE);
                         profileMenu.startAnimation(leftToRigh);
 
@@ -292,6 +298,12 @@ public class ProfileSettingsDialog extends Dialog {
                         titles.add(key);
                     }
                 }
+
+                Collections.sort(movieListModel, new Comparator<ArchiveModelMovie>() {
+                    public int compare(ArchiveModelMovie v1, ArchiveModelMovie v2) {
+                        return v1.getMovieName().compareTo(v2.getMovieName());
+                    }
+                });
 
                 //Toast.makeText(c, "SIZE: " + movieListModel.get(0), Toast.LENGTH_SHORT).show();
                 ArchiveListAdapter customAdapter = new ArchiveListAdapter(c, R.layout.archive_row, movieListModel);

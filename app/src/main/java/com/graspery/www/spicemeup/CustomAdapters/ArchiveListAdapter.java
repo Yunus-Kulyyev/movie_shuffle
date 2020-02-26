@@ -26,7 +26,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.graspery.www.spicemeup.CustomViews.NormalTextView;
 import com.graspery.www.spicemeup.Dialogs.MovieInfoDialog;
 import com.graspery.www.spicemeup.Models.ArchiveModelMovie;
-import com.graspery.www.spicemeup.Platforms.NetflixActivity;
 import com.graspery.www.spicemeup.R;
 
 import java.util.List;
